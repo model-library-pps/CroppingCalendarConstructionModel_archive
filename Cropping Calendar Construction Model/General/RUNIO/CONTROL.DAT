@@ -1,0 +1,62 @@
+strun=1
+endrun=8000
+*strun=2850
+*endrun=2850
+*----------------------------------------------------------------------*
+*                          CONTROL.DAT                                 *
+* Run control file for ORYZA2000 model (version 4.0)                   *
+* Date: August 2013                                                    *
+* Author: Pepijn van Oort                                              *
+*                                                                      *
+*----------------------------------------------------------------------*
+* In and output files for different RERUN sets for GYGA project        *
+*----------------------------------------------------------------------*
+* 1. Irrigated Rice Potential production                               *
+*----------------------------------------------------------------------*
+   FILEON = 'D:\africarice\papers\Calendar\RUNIO\RES.DAT'            ! Output file
+   FILEOL = 'MODEL.LOG'                                                                        ! Log file
+*   FILEI1 = 'D:\africarice\papers\Calendar\RUNIO\IR64OPT.CRP'                              ! Crop data
+   FILEI1 = 'D:\africarice\papers\Calendar\RUNIO\SAHEL108.CRP'                              ! Crop data
+   FILEI2 = 'D:\africarice\papers\Calendar\RUNIO\GYGA_RFR_SOIL.SOL'                     ! Soil data - NOT USED FOR YP
+
+   FILEIT = 'D:\africarice\papers\Calendar\RUNIO\MANAGE_YP.EXP'                         ! Experimental data, PRODENV = 'POTENTIAL'
+*   FILEIT = 'D:\africarice\papers\Calendar\RUNIO\MANAGE_SOILSP08.EXP'                   ! Experimental data, NITROENV = 'NITROGEN BALANCE'
+
+*   FILEIR = 'D:\africarice\papers\Calendar\RUNIO\SEN3001_DS_pheno.rer'                     ! Rerun file; source: SEN3001_DS_T0oC_CO2372ppm_s27_RHX0_DURHASOW20.xlsm
+*   FILEIR = 'D:\africarice\papers\Calendar\RUNIO\SEN3001_DS_T0oC_CO2372ppm.RER'           ! Rerun file; source: SEN3001_DS_T0oC_CO2372ppm_s27_RHX0_DURHASOW20.xlsm
+   FILEIR = 'D:\africarice\papers\Calendar\RUNIO\SEN3001_DS_T0oC_CO2372ppmTSUM.RER'       ! Rerun file; source: SEN3001_DS_T0oC_CO2372ppm_s14_RHX0_DURHASOW20.xlsm (for Sahel108) and D:\africarice\papers\Calendar\sept2015\DurationFanaye.xlsx
+*   FILEIR = 'D:\africarice\papers\Calendar\RUNIO\SEN3001_DS_T0oC_CO2372ppmTSUMIR64.RER'   ! Rerun file; source: SEN3001_DS_T0oC_CO2372ppm_s14_RHX0_DURHASOW20IR64.xlsm (for IR64)
+   
+* ---------------------------------------------------------*
+* Set output/print options
+* ---------------------------------------------------------*
+PRDEL  = 300. ! output time step (day) ! Pepijn: by setting PRDEL to 300 we reduce computation time and get output at harvesting only
+IPFORM = 5  ! code for output table format:
+            ! 4 = spaces between columns
+            ! 5 = TAB's between columns (spreadsheet output)
+            ! 6 = two column output
+
+COPINF = 'N' ! Switch variable whether to copy the input files
+             ! to the output file ('N' = do not copy,
+             ! 'Y' = copy)
+
+DELTMP = 'Y' ! Switch variable what should be done with the
+             ! temporary output file ('N' = do not delete,
+             ! 'Y' = delete)
+
+IFLAG  = 1100  ! Indicates where weather error and warnings
+               ! go (1101 means errors and warnings to log
+               ! file, errors to screen, see FSE manual)
+
+* PRSEL =   
+    ! The string array PRSEL contains the output variables for which
+    ! formatted tables have to be made. One or more times there is a
+    ! series of variable names terminated by the word <TABLE>.
+    ! The translator writes the variables in each PRINT statement to
+    ! a separate table
+
+*IOBSD = 1991,182            
+             ! List of observation data for which output is
+             ! required. The list should consist of pairs
+             ! <year>,<day> combination
+

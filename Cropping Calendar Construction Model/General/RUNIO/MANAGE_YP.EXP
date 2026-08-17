@@ -1,0 +1,240 @@
+*--------------------------------------------------------------------*
+* File name        : MANAGE_YP.EXP                                   *
+* Crop             : Oryza sativa cv. IR72                           *
+* Year/Season      : 2005                                            *
+* Experimental site: We use the IRRI/ORYZA2000 template for IR72     *
+* Production level : this management file is explorative mode        *
+*                    no water and N limitation                       *
+* People           : Pepijn van Oort                                 *
+* Additional info  : For GYGA project, we do not use plant densities *
+*                    country and station nr below. Instead we        *
+*                    provide them through the RERUNS file            *
+*                                                                    *
+*--------------------------------------------------------------------*
+
+*--------------------------------------------------------------------*
+* 1. Selection of modes of running                                   *
+*--------------------------------------------------------------------*
+*--  RICETYPE is to select lowland rice or aerobic/upland rice
+RICETYPE = 'LOWLAND'   ! Lowland rice
+*RICETYPE = 'AEROBIC'   ! Upland or aerobic rice
+
+*--  RUNMODE is mode of running ORYZA
+*RUNMODE = 'EXPERIMENT'       ! ORYZA simulates particular experiment
+RUNMODE ='EXPLORATION'      ! ORYZA used for exploraton 
+
+*--  PRODENV is Water production situation setting
+PRODENV = 'POTENTIAL'        ! Potential production
+*PRODENV = 'WATER BALANCE'   ! Production may be water-limited
+
+*-- WATBAL is choice of water balance
+*   needs only be given when PRODENV = 'WATER BALANCE'
+*WATBAL = 'PADDY'   ! PADDY water balance (for lowland soils)
+*WATBAL = 'SAHEL'   ! SAHEL water balance (for freely draining upland soils)
+*WATBAL = 'SAWAH'   ! SAWAH water balance (for lowland or upland soils)
+
+*--  NITROENV is Nitrogen production situation setting
+NITROENV = 'POTENTIAL'        ! Potential production
+*NITROENV = 'NITROGEN BALANCE'   ! Production may be nitrogen-limited
+
+* WARNING: NITROGEN AND WATER LIMITATIONS AT SAME TIME IS AS
+* YET UN UNVALIDATED OPTION IN ORYZA2000!!!! 
+
+*--  ETMOD is method for evapotranspiration calculation:
+ETMOD = 'PENMAN'            ! Penman-based (Van Kraalingen & Stol,1996)
+*ETMOD = 'PRIESTLEY TAYLOR'  ! Priestley-Taylor (")
+*ETMOD = 'MAKKINK'           ! Makkink (Van Kraalingen & Stol, 1996)
+
+*--------------------------------------------------------------------*
+* 2. Timer data for simulation                                       *
+*--------------------------------------------------------------------*
+IYEAR  = 1990                ! Start year of simulation (year)
+STTIME = 100.                  ! Start time  (day number)
+FINTIM = 1000.               ! Finish time (days after start)
+DELT   = 1.                  ! Time step   (day)
+
+*--------------------------------------------------------------------*
+* 2. Weather station and climatic data for simulation                *
+*--------------------------------------------------------------------*
+*WTRDIR = 'D:\Projets Cirad\RIDEV\METEO\'       ! Directory of weather data
+*CNTR   = 'SEN'               ! Country code
+*WTRDIR = 'D:\weather\GYGA2\'       ! Directory of weather data - special directory for GYGA weather data to be used for simulation; note some may have copyright
+* for more information on IPR and on which data to use for simulation see document "13-08-26 FINAL GYGA protocol for which weather data to use.docx"
+*WTRDIR = 'D:\africarice\atsuko\weather\'
+WTRDIR = 'D:\africarice\papers\Calendar\RUNIO\weather\'
+CNTR   = 'SEN'               ! Country code
+ISTN   = 616120                   ! Station code
+
+ANGA = 0.29                  ! Angstrom A parameter
+ANGB = 0.45                  ! Angstrom B parameter
+
+TMCTB =  0., 0.,             ! Table for temperature increase
+       366., 0.              ! Climatic Change studies
+
+FAOF  = 1.          ! MultipL. factor for pot. evapotranspiration (FAO)
+                    ! Value Murty & Tuong
+
+TMPSB = 0.          ! Temperature increase in seed-bed due to cover:
+                    ! Zero when no cover over seed-bed; 9.5 with seed-bed
+
+!pvo20140815: new switch variable to force EarlyVapourPressure (VP) so that air is saturated as Tmin, so that RHMAX = 100% at Tmin
+!If VP values in weather file are trusted then set RHX100 = 0, if not trusted but estimated, then I recommend for fields that are 
+!most of the time flooded set RHX100 = 1 and otherwise keep to RHX100 = 0
+RHX100 = 0          ! 0 = take VP from weather file, 1 = set RH = 100% at TMIN from this calculate VP
+
+*--------------------------------------------------------------------*
+* 3. Establishment data
+*--------------------------------------------------------------------*
+*--  ESTAB is method of establishment: 'TRANSPLANT' or 'DIRECT-SEED'
+ESTAB='TRANSPLANT'
+*ESTAB='DIRECT-SEED'
+
+* Transplanting date January 16, 1992; sowing date Jan. 4.
+EMD    = 198        ! Day of emergence (either direct, or in seed-bed)
+EMYR   = 1990       ! Year of emergence 
+SBDUR  = 21         ! Seed-bed duration (days between emerging and transplanting)
+
+*--------------------------------------------------------------------*
+* 4. Management parameters                                           *
+*--------------------------------------------------------------------*
+NPLH   = 5.         ! Number of plants per hill 
+NH     = 25.        ! Number of hills
+NPLSB  = 1000.      ! Number of plants in seed-bed (???)
+NPLDS  = 200.       ! Number of plants/m2 direct-seeded
+
+*-- Initial data at emergence, for either direct-seeding or seed-bed
+*   Standard data used.
+LAPE   = 0.0001     ! Initial leaf area per plant
+DVSI   = 0.0        ! Initial development stage
+WLVGI  = 0.0        ! Initial leaf weight
+WSTI   = 0.0        ! Initial stem weight
+WRTI   = 0.0        ! Initial root weight
+WSOI   = 0.0        ! Initial weight storage organs
+ZRTI   = 0.0001     ! Initial root depth (m)
+
+*-- Re-initialization at transplanting (standard data used)
+ZRTTR  = 0.05       ! Root depth at transplanting (m)
+
+*---------------------------------------------------------------*
+* 6. Irrigation parameters
+* Need only to be filled-in when PRODENV = 'WATER BALANCE'
+*---------------------------------------------------------------*
+** Select from the following options:
+SWITIR = 0 ! No irrigation; rainfed
+*SWITIR = 1 ! Irrigation supplied as input data
+*SWITIR = 2 ! Irrigation at minimum standing soil water depth
+*SWITIR = 3 ! Irrigation at minimum soil water potential
+*SWITIR = 4 ! Irrigation at minimum soil water content
+*SWITIR = 5 ! Irrigation at x days after disapp. standing water
+
+** If SWITIR = 1, supply irrigation table, amount of irrigation 
+** (y in mm) for a given calendar * day (x), used if 
+RIRRIT = 0., 20.,366., 20. 
+
+** If SWITIR = 2-5, supply amount of irrigation IRRI (mm) 
+IRRI   = 75. ! Irrigation gift (mm)
+
+** If SWITIR = 2, supply minimum standing water depth WL0MIN (mm)
+** below which irrigation water is applied
+WL0MIN = 10. ! Minimum standing water depth (mm)
+
+** If SWITIR = 3-4, supply minimum soil water potential KPAMIN (KPa)
+** (for SWITIR=3) or minimum soil water content WCMIN (-) (SWITIR=4)
+** below which irrigation water is applied, and the soil layer to
+** which this potential applies SLMIN (-)
+KPAMIN = 50.  ! Minimum soil water potential (Kpa)
+WCMIN  = 0.30 ! Minimum soil water content (-)
+SLMIN  = 4    ! Soil layer for which KPAMIN or WCMIN applies (-)
+
+** If SWITIR = 5, supply number of days after disappearence of
+** standing water (WL0DAY) at which irrigation water is applied
+WL0DAY = 0    ! number of days after disappearence of (-) INTEGER!!
+
+*--------------------------------------------------------------------*
+* 6. Nitrogen parameters                                             *
+*--------------------------------------------------------------------*
+SOILSP = 0.8  ! Indigenous soil N-supply rate (kg N/ha/d) (0.8)
+
+* Table of fertilizer rate (kg N/ha) (second column) versus days after sowing
+* in the seed-bed (!) (first column)
+FERTIL = 
+0.,    0.,
+1.,    0.,
+11.,   0.,
+12.,   60.,
+13.,   0.,
+29.,   0.,
+30.,   60.,
+31.,   0.,
+66.,   0.,
+67.,   60.,
+68.,   0.,
+94.,   0.,
+95.,   45.,
+96.,   0.,
+366.,  0.
+
+* Table of recovery fraction of Nitrogen in the soil (-) second column
+* versus development stage (DVS) (first column) STANDARD VALUE
+RECNIT = 
+0.0, 0.30,
+0.2, 0.35,
+0.4, 0.50,
+0.8, 0.75,
+1.0, 0.75,
+2.5, 0.75
+
+*--------------------------------------------------------------------*
+* 7. Measured data for model calibration and comparison              *
+*    And option to force measured LAI during simulation              *
+*    (instead of using simulated values)                             *
+*--------------------------------------------------------------------*
+* Observed phenology: only required if program DRATES is run!!
+IDOYTR = 16    ! Day of transplanting (give 0 if direct-seeded)
+IYRTR  = 1992  ! Year of transplanting (give 0 if direct-seeded)
+IDOYPI = 58    ! Day of panicle initiation (give -99 if not observed)
+IYRPI  = 1992  ! Year of panicle initiation (give -99 if not observed)
+IDOYFL = 83    ! Day of flowering
+IYRFL  = 1992  ! Year of flowering
+IDOYM  = 114   ! Day of maturity
+IYRM   = 1992  ! Year of maturity
+
+*Leaf Area Index (m2 leaf / m2 ground): 
+* LAI_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*-- Parameter to set forcing of observed LAI during simulation
+*LAI_FRC = 0      ! No forcing 
+*LAI_FRC = 2      ! Forcing 
+
+*Green leaf dry wt (kg/ha)
+*WLVG_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*Dead leaf dry wt (kg/ha)
+* WLVD_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*Stem dry wt (kg/ha)
+* WST_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*Panicle dry wt (kg/ha)
+* WSO_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*total dry wt (kg/ha)
+* WAGT_OBS = 
+* TO BE FILLED-IN (OPTIONAL)
+
+*Leaf N (g N/g leaf): 
+* FNLV_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*Leaf N (g N/m2 leaf): 
+* NFLV_OBS =
+* TO BE FILLED-IN (OPTIONAL)
+
+*-- Parameter to set forcing of observed NFLV values during simulation
+* NFLV_FRC = 0       ! No forcing 
+*NFLV_FRC = 2      ! Forcing 
